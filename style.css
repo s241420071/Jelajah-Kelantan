@@ -1,0 +1,153 @@
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #fff;
+  background: #000;
+  overflow-x: hidden;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex; justify-content: center;
+  z-index: 100;
+}
+
+nav ul {
+  list-style: none; display: flex;
+  gap: 1rem; padding: 1rem;
+  flex-wrap: wrap;
+}
+nav ul li a {
+  color: #ffcc00;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+section {
+  padding: 4rem 2rem;
+  background: #111;
+  min-height: 100vh;
+  display: none;
+  margin-top: 60px;
+}
+section.active {
+  display: block;
+}
+
+header {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: none;
+}
+header.active {
+  display: block;
+}
+header video {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; z-index: -1;
+}
+header .content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+header .content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #ffcc00;
+}
+
+.gambar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+}
+.gambar-item {
+  text-align: center;
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 250px;
+  max-width: 360px;
+  margin-bottom: 2rem;
+}
+.gambar-item img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.gambar-item img:hover {
+  transform: scale(1.05);
+}
+.gambar-item p {
+  margin-top: 0.6rem;
+  color: #ffcc00;
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 1.05em;
+}
+
+#modalOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+#modalContent {
+  background: #111;
+  padding: 1rem 1.5rem;
+  max-width: 900px;
+  width: 100%;
+  border-radius: 8px;
+  position: relative;
+  color: #fff;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+}
+#modalContent button.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #ffcc00;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+/* Responsive grid */
+@media (max-width: 900px) {
+  .gambar-item {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+@media (max-width: 600px) {
+  .gambar-item {
+    flex: 1 1 100%;
+  }
+}
