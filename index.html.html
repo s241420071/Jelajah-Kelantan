@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jelajah Kelantan 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset & Fonts */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      color: #fff;
+      background: #000;
+      overflow-x: hidden;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex; justify-content: center;
+      z-index: 100;
+    }
+    nav ul {
+      list-style: none; display: flex;
+      gap: 1rem; padding: 1rem;
+      flex-wrap: wrap;
+    }
+    nav ul li a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    section {
+      padding: 4rem 2rem;
+      background: #111;
+      min-height: 100vh;
+      display: none; /* SEMUA section sembunyi secara default */
+      margin-top: 60px; /* ruang bawah nav*/
+    }
+    section.active {
+      display: block; /* Papar section aktif */
+    }
+    header {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      display: none;
+    }
+    header.active {
+      display: block;
+    }
+    header video {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; z-index: -1;
+    }
+    header .content {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    header .content h1 {
+      font-size: 3rem; margin-bottom: 1rem;
+    }
+        section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #ffcc00;
+    }
+
+    .content-box {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .statistik-box {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .statistik-box div {
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      flex: 1 1 250px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .statistik-box div h3 {
+      font-size: 2rem;
+      color: #ffcc00;
+    }
+
+    .statistik-box div p {
+      font-size: 1.2rem;
+    }
+
+    /* dropdown-list default tersembunyi */
+    .dropdown-list {
+    display: none;
+    margin-top: 1rem;
+    background: #333;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: left;
+    position: relative; /* jangan guna absolute supaya responsif */
+    max-height: 200px;  /* sesuaikan ikut kehendak */
+    overflow-y: auto;
+    z-index: 10;
+    }  
+   .dropdown-list.active {
+    display: block;
+    }
+
+    .gambar-statistik,
+    .gambar-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 2rem auto 0 auto;
+    }
+
+    .gambar-statistik img,
+    .gambar-grid .gambar-item img {
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gambar-statistik img:hover,
+    .gambar-grid .gambar-item img:hover {
+      transform: scale(1.05);
+    }
+
+    .gambar-item {
+      text-align: center;
+      flex: 1 1 calc(33% - 1rem);
+      min-width: 250px;
+    }
+
+    .gambar-item p {
+      margin-top: 0.5rem;
+      color: #ffcc00;
+      font-weight: 600;
+    }
+    
+    .gambar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+}
+.gambar-item {
+  text-align: center;
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 250px;
+  max-width: 360px;
+  margin-bottom: 2rem;
+}
+.gambar-item img {
+  width: 100%;
+  max-width: 360px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.gambar-item img:hover {
+  transform: scale(1.05);
+}
+.gambar-item p {
+  margin-top: 0.6rem;
+  color: #ffcc00;
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 1.05em;
+}
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #000;
+      color: #888;
+    }
+
+    /* Modal styles */
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 1rem;
+    }
+
+    #modalContent {
+      background: #111;
+      padding: 1rem 1.5rem;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 8px;
+      position: relative;
+      color: #fff;
+      max-height: 90vh;
+      overflow-y: auto;
+      text-align: center;
+    }
+
+    /* Default video style */
+    #modalContent video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: #000;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* Video potret style */
+    #modalContent.video-portrait video {
+      max-width: 420px;
+      width: 100%;
+      max-height: 80vh;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      #modalContent.video-portrait video {
+        max-width: 95vw;
+        max-height: 60vh;
+      }
+    }
+
+    #modalContent button.closeBtn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #ffcc00;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Scrollbar for modal */
+    #modalContent::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #modalContent::-webkit-scrollbar-thumb {
+      background-color: #ffcc00;
+      border-radius: 10px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .gambar-item {
+        flex: 3 3 calc(50% - 1rem);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gambar-item {
+        flex: 3 3 100%;
+      }
+    }
+    
+    /* Ensuring proper display of dropdowns */
+    .statistik-box div:hover .dropdown-list {
+        display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="#home">Laman Utama</a></li>
+      <li><a href="#statistik">Statistik</a></li>
+      <li><a href="#tempat">Tempat Menarik</a></li>
+      <li><a href="#makanan">Makanan Tradisional</a></li>
+      <li><a href="#tradisi">Tradisi</a></li>
+      <li><a href="#bersejarah">Tempat Bersejarah</a></li>
+      <li><a href="#aktiviti">Aktiviti</a></li>
+      <li><a href="#festival">Festival</a></li>
+      <li><a href="#galeri">Galeri</a></li>
+      <li><a href="#hubungi">Hubungi Kami</a></li>
+    </ul>
+  </nav>
+ 
+  <header id="home" class="active">
+    <video autoplay muted loop>
+      <source src="video perlancongan.mp4" type="video/mp4" />
+    </video>
+    <div class="content">
+      <h1>Jelajah Kelantan 2025</h1>
+      <p>Keindahan budaya, warisan & alam semula jadi</p>
+    </div>
+  </header>
+
+  <section id="statistik">
+    <h2>Statistik Pelancongan</h2>
+    <div class="statistik-box">
+    <div>
+        <h3>26+ Juta</h3>
+        <p>Pelawat Sejak 2020</p>
+      </div>
+  <div onclick="toggleDropdown('lokasiList')" style="cursor:pointer;">
+    <h3>128</h3>
+    <p>Lokasi Dilawati</p>
+    <div class="dropdown-list" id="lokasiList">
+      <ul>
+        <li>Pantai Cahaya Bulan</li>
+        <li>Gunung Stong</li>
+        <li>Rantau Panjang</li>
+        <li>Wat Photivihan</li>
+      </ul>
+    </div>
+  </div>
+  <div onclick="toggleDropdown('festivalList')" style="cursor:pointer;">
+    <h3>41 Acara</h3>
+    <p>Festival Setahun</p>
+    <div class="dropdown-list" id="festivalList">
+      <ul>
+        <li>Festival Wau Antarabangsa</li>
+        <li>Festival Makanan Tradisional</li>
+        <li>Pertandingan Silat</li>
+        <li>Pesta Pantai Geting</li>
+      </ul>
+    </div>
+  </div>
+</div>
+    <div class="gambar-statistik">
+      <img src="pantai.jpg" alt="Pantai Cahaya Bulan" />
+      <img src="wau.jpg" alt="Festival Wau" />
+      <img src="khadijah.jpg" alt="Pasar Siti Khadijah" />
+    </div>
+  </section>
+
+  <section id="tempat">
+    <h2>Tempat Menarik</h2>
+    <div class="gambar-grid">
+      <div class="gambar-item">
+        <img
+          src="kraftangan.jpg"
+          alt="Kampung Kraftangan"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.705793592429!2d102.23506047474983!3d6.132164893854636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afcb9393d8eb%3A0xc4830c26c2aa9ce!2sHandicrafts%20Village!5e1!3m2!1sen!2smy!4v1752828400318!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Kampung Kraftangan</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="stong.jpg"
+          alt="Gunung Stong"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13324.513550670219!2d101.93777779999999!3d5.336388799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b5dc5efd11126d%3A0x589d17ebb09f5a1e!2sGunung%20Setong!5e1!3m2!1sen!2smy!4v1752829010567!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Gunung Stong</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="market.jpg"
+          alt="Floating Market"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60322.51102108245!2d102.14721554863281!3d6.209306900000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6adde78ecf959%3A0x9e4a40919c6ff0ec!2sFloating%20Market%20Sri%20Tanjung%20Tumpat!5e1!3m2!1sen!2smy!4v1752828566051!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Floating Market</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="gua cha.jpg"
+          alt="Gunung Cha"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d77619.21220834744!2d101.63549796023015!3d5.046016236571707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b5f5e3546e6dc9%3A0xcf636049f335846!2sGua%20Cha!5e1!3m2!1sen!2smy!4v1752828758002!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Gunung Cha</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="street.jpg"
+          alt="Street Art Kota Bharu"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1663.2587131701923!2d102.2384273!3d6.1270699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afc5e8b544eb%3A0x56fcde92f5a2b33c!2sStreet%20Art%20Kota%20Bharu!5e1!3m2!1sen!2smy!4v1752828817537!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Street Art Kota Bharu</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="khadijah.jpg"
+          alt="Pasar Siti Khadijah"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1663.2493023873749!2d102.23925!3d6.130089100000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afcf1ff59eb7%3A0x1e2ad0e97bedfb4c!2sSiti%20Khadijah%20Market!5e1!3m2!1sen!2smy!4v1752828900724!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Pasar Siti Khadijah</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="makanan">
+    <h2>Makanan Tradisional</h2>
+    <div class="gambar-grid">
+      <div class="gambar-item">
+        <img
+          src="nasi kerabu kelantan.jpg"
+          alt="Nasi Kerabu"
+          onclick="showShopList('Kedai Disyorkan Untuk Nasi Kerabu', [
+            {name:'Lieniey Nasi Kerabu Tumis', mapURL:'https://maps.app.goo.gl/WFgXaRFqp64hXopi7'},
+            {name:'Nasi Kerabu Golok Berek 12', mapURL:'https://maps.app.goo.gl/ZYpqQ5PDvP8RKCte8'}
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Nasi Kerabu</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="nasi dagang.jpg"
+          alt="Nasi Dagang"
+          onclick="showShopList('Kedai Disyorkan Untuk Nasi Dagang', [
+            {name:'Kak Laa Nasi Dagang Banggol', mapURL:'https://maps.app.goo.gl/zUXrkcgqKY6uqLNn8'},
+            {name:'Kak Chik Nasi Berlauk Kg Berangan', mapURL:'https://maps.app.goo.gl/YA1KSsd7bdxzcbPZ9'},
+{name:'Nasi Dage Rayo Basmathi', mapURL:'https://maps.app.goo.gl/KxJLpUYjYgPKjyiE7'},
+{name:'Kopitiam Kita', mapURL:'https://maps.app.goo.gl/iqNT3ZcPWXbkmyUw8'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Nasi Dagang</p>
+      </div>
+        <div class="gambar-item">
+      <img
+        src="serunding.jpg"
+        alt="Serunding"
+        onclick="showShopList('Kedai Disyorkan Untuk Serunding', [
+          {name:'Serunding Kampung Laut', mapURL:'https://maps.app.goo.gl/igkgBd5XQUcS15SS9'},
+          {name:'Dodol & Serunding Hajah Wan Sabariah', mapURL:'https://maps.app.goo.gl/hFi6KAeTrgKgi78R6'},
+{name:'Samsiah Serunding Kampung Laut Tumpat Kelantan', mapURL:'https://maps.app.goo.gl/b1y8Le4NG34gVyqX8'},
+
+        ])"
+        style="cursor:pointer"
+      />
+      <p>Serunding</p>
+    </div>
+    <div class="gambar-item">
+      <img
+        src="akok.jpg"
+        alt="Akok"
+        onclick="showShopList('Kedai Disyorkan Untuk Akok', [
+          {name:'Akok Belahat', mapURL:'https://maps.app.goo.gl/BYx7qSN2hL8AncPj6'},
+          {name:'Akok Padang Enggang', mapURL:'https://maps.app.goo.gl/o6wsNmdeBr1Htv6s8'},
+{name:'Akok Cikgu Kubang Kerian', mapURL:'https://maps.app.goo.gl/CPX3vZWs1e59srtr6'},
+        ])"
+        style="cursor:pointer"
+      />
+      <p>Akok</p>
+    </div>
+    <div class="gambar-item">
+      <img
+        src="percik.jpg"
+        alt="Ayam Percik"
+        onclick="showShopList('Kedai Disyorkan Untuk Ayam Percik', [
+          {name:'Yati Ayam Percik', mapURL:'https://maps.app.goo.gl/hwvMcH5XgC4JZJHZ6'},
+          {name:'Restoran Percik Warisan', mapURL:'https://maps.app.goo.gl/No9n2WKDeNo4zRKn6'}
+        ])"
+        style="cursor:pointer"
+      />
+      <p>Ayam Percik</p>
+    </div>
+    <div class="gambar-item">
+      <img
+        src="etok.jpg"
+        alt="Etok Salai"
+        onclick="showShopList('Kedai Disyorkan Untuk Etok Salai', [
+          {name:'ETOK SALAI VIRAL WARISAN GUNUNG', mapURL:'https://maps.app.goo.gl/fHPjNuGL2aJunUvf6'},
+          {name:'Etok salai kakna pc', mapURL:'https://maps.app.goo.gl/vkn22LF7xkdUs5d48'},
+{name:'GERAI ETAK', mapURL:'https://share.google/AawekLbtAO5A0lzJ5'},
+        ])"
+        style="cursor:pointer"
+      />
+      <p>Etok Salai</p>
+    </div>
+  </div>
+</section>
+
+  <section id="tradisi">
+    <h2>Tradisi</h2>
+     <div class="gambar-grid">
+      <div class="gambar-item" onclick="showVideo('wau.mp4')">
+        <img src="buat wau.jpg" alt="Pembuatan Wau" />
+        <p>Pembuatan Wau</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('gasing.mp4')">
+        <img src="gasingg.jpg" alt="Gasing Uri" />
+        <p>Gasing Uri</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('silat.mp4')">
+        <img src="silat.jpg" alt="Silat" />
+        <p>Silat</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('kulit.mp4')">
+        <img src="wayang.jpg" alt="Wayang Kulit" />
+        <p>Wayang Kulit</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('barat.mp4')">
+        <img src="dikir.jpg" alt="Dikir Barat" />
+        <p>Dikir Barat</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('makyong.mp4')">
+        <img src="yong.jpg" alt="Mak Yong" />
+        <p>Mak Yong</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="bersejarah">
+    <h2>Tempat Bersejarah</h2>
+    <div class="gambar-grid">
+      <div class="gambar-item">
+        <img
+          src="istana.jpg"
+          alt="Istana Balai Besar"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15867.9659505512!2d102.22874286977542!3d6.1318451000000165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6af00556c06e5%3A0x7d03aa1a67f119d1!2sIstana%20Balai%20Besar!5e0!3m2!1sen!2smy!4v1752833288456!5m2!1sen!2smy')"
+          style="cursor:pointer"
+        />
+        <p>Istana Balai Besar</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="muzium.jpg"
+          alt="Muzium Negeri"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.0422254225405!2d102.2382924!3d6.125020100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afc42e0d52c9%3A0x7a75b6c84e573399!2sKelantan%20State%20Museum!5e0!3m2!1sen!2smy!4v1752833409283!5m2!1sen!2smy')" 
+          style="cursor:pointer"
+        />
+        <p>Muzium Negeri</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="jahar.jpg"
+          alt="Istana Jahar"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.993634306758!2d102.23456187474984!3d6.1315564938552924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afc931d74dcb%3A0x8c295b7ed0bdc4be!2sIstana%20Jahar!5e0!3m2!1sen!2smy!4v1752833678438!5m2!1sen!2smy')" 
+          style="cursor:pointer"
+        />
+        <p>Istana Jahar</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="kerapu.jpg"
+          alt="War Museum — Kerapu Bank"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.9914549095706!2d102.23545589999999!3d6.1318494999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afc90d8e7035%3A0xbdac945bdc42561b!2sWar%20Museum%20%E2%80%94%20Kerapu%20Bank!5e0!3m2!1sen!2smy!4v1752833584410!5m2!1sen!2smy')" 
+          style="cursor:pointer"
+        />
+        <p>War Museum — Kerapu Bank</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="mosq.jpg"
+          alt="Masjid Muhammadi"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.98850422957!2d102.23155437731819!3d6.1322461780090185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6afc946ebe843%3A0x3038a35ff1676f41!2sMuhammadi%20Mosque%20(State%20Mosque)!5e0!3m2!1sen!2smy!4v1752833721214!5m2!1sen!2smy')" 
+          style="cursor:pointer"
+        />
+        <p>Masjid Muhammadi</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="laut.jpg"
+          alt="Kampung Laut"
+          onclick="showMap('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.8235207445537!2d102.22826497474995!3d6.154385393832711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31b6af41e1de58d7%3A0x2b27bc1e4493a596!2sKampung%20Laut%20Cultural%20Heritage%20Site!5e0!3m2!1sen!2smy!4v1752833842766!5m2!1sen!2smy')" 
+          style="cursor:pointer"
+        />
+        <p>Kampung Laut</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="aktiviti">
+    <h2>Aktiviti</h2>
+    <div class="gambar-grid">
+      <div class="gambar-item">
+        <img
+          src="river.jpg"
+          alt="River Cruise"
+          onclick="showShopList('Tempat Disyorkan untuk River Cruise', [
+            {name:'Kelantan MiB River Cruise', mapURL:'https://maps.app.goo.gl/p65vdPJYPW47rhtH6'},
+            {name:'Pulau Suri', mapURL:'https://maps.app.goo.gl/hhzKvyzhX9vcoL14A'},
+{name:'Bahtera Kembara Holidays Sdn Bhd', mapURL:'https://maps.app.goo.gl/UFjd4q3Q2BJ7phvD6'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>River Cruise</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="bachok.jpg"
+          alt="Pantai"
+          onclick="showShopList('Tempat Disyorkan untuk Pantai', [
+            {name:'Pantai Cahaya Bulan', mapURL:'https://maps.app.goo.gl/2RwT49r2w4ARMTdD6'},
+            {name:'Pantai Irama Bachok', mapURL:'https://maps.app.goo.gl/6i8TsNWjX4NaSBLt9'},
+{name:'Pantai Melawi', mapURL:'https://maps.app.goo.gl/78Gc6xTLkGEysjEN7'},
+{name:'Geting Beach', mapURL:'https://maps.app.goo.gl/8jN2Dog8j1AuBEqC9'},
+{name:'Pantai Nusuk', mapURL:'https://maps.app.goo.gl/5NPyoyKQV9oYedbf6'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Pantai</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="dabong.jpg"
+          alt="Aktiviti Rekreasi"
+          onclick="showShopList('Tempat Rekreasi Disyorkan', [
+            {name:'Kompleks Gua Ikan', mapURL:'https://maps.app.goo.gl/bvjS9UZ3PN2zpHYN6'},
+{name:'Jelawang Waterfall', mapURL:'https://maps.app.goo.gl/4kwSrxKqMfB21eBJ9'},
+{name:'Lata Janggut', mapURL:'https://maps.app.goo.gl/eLrV9KBayQmfAQjB6'},
+{name:'Gunung Setong', mapURL:'https://maps.app.goo.gl/HtK4YBkKaU8Cac2G8'},
+            {name:'Jelawang Dream Pipe Resort & Extreme Park', mapURL:'https://maps.app.goo.gl/qCQ1ETHSNA44S7Do8'}
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Aktiviti Rekreasi</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="batik.jpg"
+          alt="Melukis, Mencanting dan Mewarna Batik"
+          onclick="showShopList('Bengkel Batik Disyorkan', [
+            {name:'Bengkel Batik Ayu Fashion', mapURL:'https://maps.app.goo.gl/V6gRigcQz1ok8riPA'},
+            {name:'Kampung Kraftangan', mapURL:'https://maps.app.goo.gl/rDgZgorcX29k86R27'},
+{name:'Kampung Laut Cultural Heritage Site', mapURL:'https://maps.app.goo.gl/rGXrrVK3CFUoHpM58'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Melukis, Mencanting dan Mewarna Batik</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="wakaf.jpg"
+          alt="Bazar Pagi dan Malam"
+          onclick="showShopList('Bazar Disyorkan', [
+            {name:'Bazar Malam Wakaf Che Yeh', mapURL:'https://goo.gl/maps/wakaf1'},
+            {name:'Pasar Malam Kubang Kerian', mapURL:'https://goo.gl/maps/kubang1'},
+{name:'Pasar Pagi Kedai Lalat', mapURL:'https://maps.app.goo.gl/r43HrA9uQ35XiUY2A'},
+{name:'Pasar Pendekar Kampung Guntong', mapURL:'https://maps.app.goo.gl/UvhiQGeFfNRhgrH19'},
+{name:'Pasar Nelayan DRhu Rehlah', mapURL:'https://maps.app.goo.gl/psQoAriAELwmLXqD9'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Bazar Pagi dan Malam</p>
+      </div>
+      <div class="gambar-item">
+        <img
+          src="mass.jpg"
+          alt="Lawatan Masjid"
+          onclick="showShopList('Masjid Disyorkan', [
+            {name:'Masjid Muhammadi', mapURL:'https://maps.app.goo.gl/2LyB31WTUJaygxYt6'},
+            {name:'Masjid Tengku Razaleigh', mapURL:'https://maps.app.goo.gl/mcWws9JdBzkhWhsy9'},
+{name:'Kampung Laut Mosque', mapURL:'https://maps.app.goo.gl/PrjLkkktvhvwZNL7A'},
+{name:'Sultan Ismail Petra Perak Jubilee', mapURL:'https://maps.app.goo.gl/LHu79DcnUDFrCp499'},
+{name:'Imanul Faizin Mosque (Andalusia Mosque)', mapURL:'https://maps.app.goo.gl/2dwyNEYJwo2U8zTa6'},
+          ])"
+          style="cursor:pointer"
+        />
+        <p>Lawatan Masjid</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="festival">
+    <h2>Festival</h2>
+    <div class="gambar-grid">
+      <!-- Tukar fungsi onclick ke showVideo dengan video mp4 tempatan -->
+      <div class="gambar-item" onclick="showVideo('festival wau.mp4')">
+        <img src="pesta wau.jpg" alt="Festival Wau" />
+        <p>Festival Wau</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('seni budaya.mp4')">
+        <img src="festival.jpg" alt="Festival Seni Budaya" />
+        <p>Festival Seni Budaya</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('lumba.mp4')">
+        <img src="perahu.jpg" alt="Kelantan Bot Race" />
+        <p>Kelantan Bot Race</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('havoc.mp4')">
+        <img src="makanan.jpg" alt="Festival Makanan" />
+        <p>Festival Makanan</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('gendang.mp4')">
+        <img src="gendang.jpg" alt="Festival Gendang Nusantara" />
+        <p>Festival Gendang Nusantara</p>
+      </div>
+      <div class="gambar-item" onclick="showVideo('lembu.mp4')">
+        <img src="lembu.jpg" alt="Festival Lembu Sado" />
+        <p>Festival Lembu Sado</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="galeri">
+    <h2>Galeri</h2>
+<div style="max-width:900px;margin:2rem auto;text-align:center;">
+      <video width="100%" height="auto" controls>
+        <source src="kelantan.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    <<div class="gambar-grid">
+    <div class="gambar-item">
+      <img src="1.jpg" alt="Pantai Melawi" style="cursor:pointer"
+           onclick="showMiniGallery('pantaiCB',0)" />
+      <p>Pantai Melawi</p>
+    </div>
+    <div class="gambar-item">
+      <img src="gm.jpg" alt="Gua Musang" style="cursor:pointer"
+           onclick="showMiniGallery('guamusang',0)" />
+      <p>Gua Musang</p>
+    </div>
+    <div class="gambar-item">
+      <img src="Lata Dilwale.jpg" alt="Lata Air" style="cursor:pointer"
+           onclick="showMiniGallery('lataair',0)" />
+      <p>Lata Air</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="hubungi">
+    <h2>Hubungi Kami</h2>
+    <div class="content-box">
+      <form
+        style="max-width:600px;margin:auto;display:flex;flex-direction:column;gap:1rem;"
+        >
+        <input
+          type="text"
+          placeholder="Nama Penuh"
+          required
+          style="padding:0.75rem;border-radius:8px;border:none;"
+        />
+        <input
+          type="email"
+          placeholder="Alamat Emel"
+          required
+          style="padding:0.75rem;border-radius:8px;border:none;"
+        />
+        <textarea
+          rows="5"
+          placeholder="Mesej anda..."
+          required
+          style="padding:0.75rem;border-radius:8px;border:none;"
+        ></textarea>
+        <button
+          type="submit"
+          style="
+            padding: 0.75rem;
+            background: #ffcc00;
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+          "
+        >
+          Hantar
+        </button>
+      </form>
+    </div>
+  </section>
+<div id="modalOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; z-index:9999; padding:1rem;">
+  <div id="modalContent" style="background:#111; padding:1rem 1.5rem; max-width:900px; width:100%; border-radius:8px; position:relative; color:#fff; max-height:90vh; overflow-y:auto; text-align:center;">
+    <button class="closeBtn" onclick="closeModal()" aria-label="Tutup" style="position:absolute; top:10px; right:15px; background:none; border:none; color:#ffcc00; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+  <script>
+// Data koleksi gambar mini galeri untuk setiap item
+const miniGalleryData = {
+  pantaiCB: [
+    '2.jpg',
+    '3.jpg',
+    '4.jpg',
+    '5.jpg',
+    '6.jpg',
+    '7.jpg',
+  ],
+  guamusang: [
+    'restoran.jpg',
+    'masjid gua.jpg',
+    'taman negara.jpg',
+    'masjid buluh.jpg',
+    'warong.jpg',
+  ],
+   lataair: [
+    'Lata Kashmir.jpg',
+    'Lata Rek.jpg',
+    'Lata Berangin.jpg',
+    'Lata Janggut.jpg',
+  ],
+};
+
+let currentGalleryKey = null;
+let currentGalleryIndex = 0;
+
+// Papar satu gambar besar dengan next/prev
+function showMiniGallery(key, index = 0) {
+  const images = miniGalleryData[key];
+  if (!images) return;
+
+  // Simpan state
+  currentGalleryKey = key;
+  currentGalleryIndex = index;
+
+  // Generate HTML untuk modal - satu gambar besar
+  const img = images[currentGalleryIndex];
+  let galeriHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <img src="${img}" style="max-width:90vw;max-height:70vh;width:100%;border-radius:16px;box-shadow:0 6px 32px #0008;margin-bottom:1rem;" alt="" />
+      <div style="margin-top:1rem;display:flex;gap:1.5rem;align-items:center;">
+        <button onclick="prevGalleryImage()" style="padding:0.6em 1.2em;font-size:1.5em;border-radius:8px;background:#222;border:none;color:#ffcc00;cursor:pointer;">&#8592;</button>
+        <span style="color:#fff;font-weight:bold;">${currentGalleryIndex + 1} / ${images.length}</span>
+        <button onclick="nextGalleryImage()" style="padding:0.6em 1.2em;font-size:1.5em;border-radius:8px;background:#222;border:none;color:#ffcc00;cursor:pointer;">&#8594;</button>
+      </div>
+    </div>
+  `;
+  openModal(galeriHTML);
+}
+
+// Butang Next
+function nextGalleryImage() {
+  const images = miniGalleryData[currentGalleryKey];
+  if (!images) return;
+  currentGalleryIndex = (currentGalleryIndex + 1) % images.length; // Loop semula ke depan
+  showMiniGallery(currentGalleryKey, currentGalleryIndex);
+}
+
+// Butang Previous
+function prevGalleryImage() {
+  const images = miniGalleryData[currentGalleryKey];
+  if (!images) return;
+  currentGalleryIndex = (currentGalleryIndex - 1 + images.length) % images.length; // Ulang ke belakang
+  showMiniGallery(currentGalleryKey, currentGalleryIndex);
+}
+  // Fungsi toggle dropdown statistik
+  function toggleDropdown(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('active');
+  }
+
+  // Buka modal dan isi kandungan HTML dinamik
+  function openModal(contentHTML) {
+    const modal = document.getElementById('modalOverlay');
+    const modalBody = document.getElementById('modalBody');
+    modalBody.innerHTML = contentHTML;
+    modal.style.display = 'flex';
+    document.getElementById('modalContent').focus();
+  }
+
+  // Tutup modal dan bersihkan konten video jika ada
+  function closeModal() {
+    const modal = document.getElementById('modalOverlay');
+    const modalBody = document.getElementById('modalBody');
+    modal.style.display = 'none';
+    modalBody.innerHTML = '';
+    const video = modalBody.querySelector('video');
+    if (video) {
+      video.pause();
+      video.src = '';
+    }
+  }
+
+  // Tutup modal jika klik luar kontennya
+  function closeOnOutsideClick(e) {
+    if (e.target.id === 'modalOverlay') {
+      closeModal();
+    }
+  }
+
+  // Papar peta Google di modal
+  function showMap(locationURL) {
+    const mapHTML = `<iframe src="${locationURL}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+    openModal(mapHTML);
+  }
+
+  // Papar senarai kedai di modal dengan pautan
+  function showShopList(title, shops) {
+    let listHTML = `<h3 style="color:#ffcc00; margin-bottom:1rem;">${title}</h3><ul style="list-style-type:disc; padding-left:1.5rem;">`;
+    shops.forEach(shop => {
+      listHTML += `<li style="margin-bottom:0.5rem;"><a href="${shop.mapURL}" target="_blank" rel="noopener" style="color:#ffcc00; text-decoration:underline;">${shop.name}</a></li>`;
+    });
+    listHTML += '</ul>';
+    openModal(listHTML);
+  }
+
+  // Papar video dalam modal dengan pengesanan orientasi (portrait/landscape)
+  function showVideo(videoURL) {
+    const modal = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+    const modalBody = document.getElementById('modalBody');
+
+    modalBody.innerHTML = `
+      <video id="modalVideoTemp" width="100%" height="auto" controls autoplay style="background:#000; border-radius:8px;">
+        <source src="${videoURL}" type="video/mp4" />
+        Browser anda tidak menyokong video.
+      </video>
+    `;
+
+    modal.style.display = 'flex';
+
+    const video = document.getElementById('modalVideoTemp');
+    video.onloadedmetadata = function () {
+      if (video.videoHeight > video.videoWidth) {
+        modalContent.classList.add('video-portrait');
+      } else {
+        modalContent.classList.remove('video-portrait');
+      }
+    };
+    video.play();
+  }
+
+  // Fungsi untuk paparkan section bersesuaian ikut hash di URL
+  function showSectionFromHash() {
+    const hash = window.location.hash || '#home';
+    document.querySelectorAll('section').forEach(section => section.classList.remove('active'));
+    document.querySelectorAll('header').forEach(header => header.classList.remove('active'));
+
+    if (hash === '#home') {
+      document.getElementById('home').classList.add('active');
+    } else {
+      const target = document.querySelector(hash);
+      if (target) {
+        target.classList.add('active');
+      } else {
+        document.getElementById('home').classList.add('active');
+      }
+    }
+    window.scrollTo(0, 0);
+  }
+
+  // Navigasi - hanya cegah default klik pada #home supaya scroll lancar
+  document.querySelectorAll('nav ul li a').forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if (href === '#home') {
+        e.preventDefault();
+        document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, null, href);
+        showSectionFromHash();
+      }
+      // Untuk link lain, biar browser tukar hash dan event hashchange yang handle paparan
+    });
+  });
+
+  // Event listener untuk hashchange dan load halaman
+  window.addEventListener('load', showSectionFromHash);
+  window.addEventListener('hashchange', showSectionFromHash);
+
+  // Event untuk tutup modal jika klik luar kandungan modal
+  document.getElementById('modalOverlay').addEventListener('click', closeOnOutsideClick);
+    
+  </script>
+</body>
+</html>
